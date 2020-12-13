@@ -37,12 +37,15 @@ class App extends React.Component {
     store.dispatch(changeListElement(showfavourite));
   }
   render() {
-    const { movies } = this.props.store.getState();  // { movies:{} , search:{}}
+    const { movies, search } = this.props.store.getState();  // { movies:{} , search:{}}
     const { show_favourite } = movies;
     const list = show_favourite ? movies.favourites : movies.list;
     return (
       <div className="App">
-        <Navbar />
+        <Navbar
+          dispatch={this.props.store.dispatch}
+          search={search}
+        />
         <div className="main">
           <div className="tabs">
 

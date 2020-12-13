@@ -1,5 +1,6 @@
-import {combineReducers} from 'redux'
-import { ADD_MOVIES, ADD_TO_FAVOURITE, REMOVE_FROM_FAVOURITE, CHANGE_LIST_ELEMENT } from '../actions/index';
+import { act } from 'react-dom/test-utils';
+import { combineReducers } from 'redux'
+import { ADD_MOVIES, ADD_TO_FAVOURITE, REMOVE_FROM_FAVOURITE, CHANGE_LIST_ELEMENT, ADD_SEARCH_RESULT, ADD_TO_MOVIES } from '../actions/index';
 // Reducers function should allways be a pure function
 // pure functions have following properties
 // 1.same output for same input
@@ -37,24 +38,43 @@ export function movies(state = intialMoviesState, action) {
                 ...state,
                 show_favourite: action.showFavourite
             };
+        case ADD_TO_MOVIES:
+            return {
+                ...state,
+                list: [action.movie, ...state.list] 
+            }
         default:
             return state;
     }
 }
 
 const intialSearchState = {
-    result: {}
+    result: {},
+    showSearchResults: false
 }
 
 export function search(state = intialSearchState, action) {
-    console.log('State Reducer')
+    if (action.type === ADD_SEARCH_RESULT) {
+        return {
+            ...state,
+            result: action.movie,
+            showSearchResults: true
+        }
+    }
+    if (action.type === ADD_TO_MOVIES) {
+        return {
+            ...state,
+            result: {},
+            showSearchResults: false
+        }
+    }
     return state;
 }
 
-const intialRootState = {
-    movies: intialMoviesState,
-    search: intialSearchState
-}
+// const intialRootState = {
+//     movies: intialMoviesState,
+//     search: intialSearchState
+// }
 
 export default combineReducers({
     movies: movies,

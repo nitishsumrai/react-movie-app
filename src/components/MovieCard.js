@@ -5,7 +5,6 @@ class MovieCard extends React.Component {
 
 
     handleFavouriteClick = () => {
-
         const { movie, dispatch } = this.props;
         dispatch(addFavourite(movie));
     }
@@ -29,7 +28,6 @@ class MovieCard extends React.Component {
                             ? <button className='unfavourite-btn' onClick={this.handleUnfavouriteClick}>Unfavourite</button>
                             : <button className='favourite-btn' onClick={this.handleFavouriteClick}>Favourite</button>
                     }
-
                 </div>
             </div>
         </div>)
