@@ -43,6 +43,7 @@ export function changeListElement(showFavourite) {
 
 export function handleMovieSearch(movie) {
     console.log('handleMovieSearch');
+    console.log(movie)
     let url = `http://www.omdbapi.com/?apikey=3ca5df7&t=${movie}`;
     return function (dispatch) {
         fetch(url)

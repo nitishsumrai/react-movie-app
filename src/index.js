@@ -3,10 +3,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
+
+import {Provider} from 'react-redux'
+
 // file import
 import './index.css';
 import App from './components/App';
 import rootReducer from './Reducers/index'
+import { render } from '@testing-library/react';
+
 
 // following function is curried form of logger function(obj,next,action)
 // redux will call this function as logger(obj)(next)(action)
@@ -38,7 +43,19 @@ const logger = ({ dispatch, getState }) => (next) => (action) => {
 // }
 
 const store = createStore(rootReducer, applyMiddleware(logger, thunk));
-console.log('store', store);
+// export const StoreContext = createContext();
+// console.log('Store Context:', StoreContext)
+// console.log('store', store);
+// class Provider extends React.Component {
+//   render() {
+//     const { store } = this.props;
+//     console.log('Properties-', this.props);
+//     return <StoreContext.Provider value={store}>
+//       {this.props.children}
+//     </StoreContext.Provider>
+//   }
+// }
+
 // console.log('Before state', store.getState());
 // store.dispatch({
 //   type: 'ADD_MOVIES',
@@ -49,10 +66,44 @@ console.log('store', store);
 
 // console.log('After state', store.getState());
 
+// const connectedAppComponent = connect(callback)(App);
+// export function connect(callback) {
+//   return (Component) => {
+//     class ConnectedComponent extends React.Component {
+//       constructor(props) {
+//         super(props);
+//         this.unSubscribe = this.props.store.subscribe(() => this.forceUpdate());
+//       }
+//       componentWillUnmount() {
+//         //  this will destroy the listener 
+//         this.unSubscribe();
+//       }
+//       render() {
+//         const { store } = this.props;
+//         const state = store.getState();
+//         const dataToBePassed = callback(state);
+//         return (<Component {...dataToBePassed}
+//           dispatch={store.dispatch}
+//         />)
+//       }
+//     }
+//   return class ConnectedComponentWrapper extends React.Component {
+//     render() {
+//       return (<StoreContext>
+//         {
+//           (store) => {
+//             return (<ConnectedComponent store={store} />)
+//           }
+//         }
+//       </StoreContext>)
+//     }
+//   }
+// }
+// }
 ReactDOM.render(
-  <React.StrictMode>
-    <App store={store} />
-  </React.StrictMode>,
+  <Provider store={store}>
+    <App />
+  </Provider>,
   document.getElementById('root')
 );
 

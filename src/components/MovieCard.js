@@ -33,4 +33,5 @@ class MovieCard extends React.Component {
         </div>)
     }
 }
+
 export default MovieCard;

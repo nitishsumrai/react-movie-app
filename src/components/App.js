@@ -4,25 +4,20 @@ import { data } from '../data';
 import Navbar from './Navbar';
 import MovieCard from './MovieCard';
 import { addMovies, changeListElement } from '../actions/index';
+import { connect } from "react-redux";
 class App extends React.Component {
 
 
   componentDidMount() {
-    const { store } = this.props;
+  
 
-    // add listener for state changes
-    store.subscribe(() => {
-      this.forceUpdate();
-      console.log('UPDATED')
-      console.log(this.props.store.getState());
-    })
     // make api call
     // dispatch action
     // pass an action to reducer
-    store.dispatch(addMovies(data));
+    this.props.dispatch(addMovies(data));
   }
   isMovieFavourite = (movie) => {
-    const { movies } = this.props.store.getState();  // { movies:{} , search:{}}
+    const { movies } = this.props;  // { movies:{} , search:{}}
     const { favourites } = movies;
     const index = favourites.indexOf(movie);
     //  console.log(index)
@@ -37,14 +32,16 @@ class App extends React.Component {
     store.dispatch(changeListElement(showfavourite));
   }
   render() {
-    const { movies, search } = this.props.store.getState();  // { movies:{} , search:{}}
+
+
+    const { movies, search } = this.props;  // { movies:{} , search:{}}
     const { show_favourite } = movies;
     const list = show_favourite ? movies.favourites : movies.list;
+
     return (
       <div className="App">
         <Navbar
-          dispatch={this.props.store.dispatch}
-          search={search}
+          
         />
         <div className="main">
           <div className="tabs">
@@ -58,7 +55,7 @@ class App extends React.Component {
               return <MovieCard
                 movie={movie}
                 key={`movies-${index}`}
-                dispatch={this.props.store.dispatch}
+                dispatch={this.props.dispatch}
                 isFavourite={this.isMovieFavourite(movie)}
               />
             })}
@@ -69,4 +66,15 @@ class App extends React.Component {
     );
   }
 }
-export default App;
+
+
+
+// state is store's data
+function callback(state) {
+  return {
+      movies: state.movies,
+      search: state.search
+  }
+}
+const ConnectedAppComponent = connect(callback)(App);
+export default ConnectedAppComponent;

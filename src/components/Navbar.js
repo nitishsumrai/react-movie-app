@@ -1,6 +1,7 @@
 import React from 'react';
+import { connect } from "react-redux";
 import { handleMovieSearch, addToMovies } from '../actions/index';
-class Navabar extends React.Component {
+class Navbar extends React.Component {
 
     constructor() {
         super();
@@ -34,19 +35,28 @@ class Navabar extends React.Component {
                 <input onChange={this.handleChange} />
                 <button id='search-btn' onClick={this.handleSearch}> Search</button>
                 {showSearchResults &&
-                    <div className="search-results">
-                        <div className="search-results">
+                    (<div className="search-results">
+                        <div className="search-result">
 
-                            <img alt="movie-poster" src={movie.Poster}></img>
+                            <img alt="search-pic" src={movie.Poster}></img>
                             <div className="movie-info">
                                 <span >{movie.Title}</span>
-                                <button onClick={() => this.handleAddTOMovies(movie)}>Add To Movies</button>
+                                <button  onClick={() => this.handleAddTOMovies(movie)}>Add To Movies</button>
                             </div>
                         </div>
-                    </div>}
+                    </div>)}
             </div>
         </div >)
 
     }
 }
-export default Navabar;
+
+
+function mapStateToTheProps(state) {
+    return {
+        search: state.search
+    }
+}
+const ConnectedNavbarComponent = connect(mapStateToTheProps)(Navbar)
+
+export default ConnectedNavbarComponent;
